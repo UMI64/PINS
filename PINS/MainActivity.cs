@@ -2,6 +2,7 @@
 using Android.Views;
 using Android.App;
 using Android.Content;
+using Android.Util;
 using Android.Widget;
 using Android.OS;
 using Android.Support.V4.Widget;
@@ -10,6 +11,7 @@ using PINS.Fragments;
 using Android.Support.V4.View;
 using Android.Support.Design.Widget;
 using System.Threading.Tasks;
+using Java.Lang.Reflect;
 
 
 
@@ -22,35 +24,26 @@ namespace PINS
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Main);
-            
+            /*tablayout*/
             TabLayout tab = FindViewById<TabLayout>(Resource.Id.tabMain);
             tab.AddTab(tab.NewTab().SetText("小猪"));
             tab.AddTab(tab.NewTab().SetText("社会"));
             tab.AddTab(tab.NewTab().SetText("教育"));
-
-
-            ListView listview_leftMenu = FindViewById<ListView>(Resource.Id.left_menu);
-            Button ToolBarUser_button = FindViewById<Button>(Resource.Id.ToolBarUser_button);
-            Button LoginOrSign = FindViewById<Button>(Resource.Id.LoginOrSign);
-            DrawerLayout drawerLayout = FindViewById<DrawerLayout>(Resource.Id.left_Active);
+            // 设置TabLayout的“长度”
+            SetIndicator(tab, 25, 25);
+            /*viewpage*/
             var viewPager = FindViewById<ViewPager>(Resource.Id.ly_content);
             var mAdapter = new MyFragmentPagerAdapter(SupportFragmentManager, tab.TabCount);
             viewPager.Adapter = mAdapter;
             viewPager.CurrentItem = 0;
-            
             //Tab 选择事件  
             tab.TabSelected += (s, e) =>
             {
                 viewPager.CurrentItem = e.Tab.Position;
             };
-            viewPager.AddOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));
-            
-
+            viewPager.AddOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tab));//关联Tablayout+Viewpager
+            /*toolbar右侧菜单*/
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            string[] menus = new string[] { "登录", "检查更新", "关于我们" };
-            ArrayAdapter adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleExpandableListItem1, menus);
-            listview_leftMenu.Adapter = new MyCustomeAdapter(this, menus);
-
             toolbar.InflateMenu(Resource.Menu.actionMenu); //填充actionMenu菜单项  
             toolbar.MenuItemClick += (s, e) => //菜单项单击事件  
             {
@@ -67,6 +60,11 @@ namespace PINS
                     Toast.MakeText(this, "搜索菜单项", ToastLength.Short).Show();
                 }
             };
+            /*左菜单的list*/
+            ListView listview_leftMenu = FindViewById<ListView>(Resource.Id.left_menu);
+            string[] menus = new string[] { "登录", "检查更新", "关于我们" };
+            ArrayAdapter adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleExpandableListItem1, menus);
+            listview_leftMenu.Adapter = new MyCustomeAdapter(this, menus);
             listview_leftMenu.ItemClick += (o, e) =>
             {
                 if (menus[e.Position] == "检查更新")
@@ -75,34 +73,48 @@ namespace PINS
                     startupWork.Start();
                 }
             };
+            /*左菜单呼出按钮*/
+            DrawerLayout drawerLayout = FindViewById<DrawerLayout>(Resource.Id.left_Active);
+            Button ToolBarUser_button = FindViewById<Button>(Resource.Id.ToolBarUser_button);
             ToolBarUser_button.Click += (o, e) =>
-           {
-               drawerLayout.OpenDrawer((int)GravityFlags.Start);
-           };
+            {
+                drawerLayout.OpenDrawer((int)GravityFlags.Start);
+            };
+            /*登录按钮*/
+            Button LoginOrSign = FindViewById<Button>(Resource.Id.LoginOrSign);
             LoginOrSign.Click += (o, e) =>
             {
                 Task startupWork = new Task(() => { ToLoginOrSign(); });
                 startupWork.Start();
             };
-
+            /*设置状态栏*/
             StatusBarUtil.SetColorStatusBar(this);
         }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             return base.OnCreateOptionsMenu(menu);
         }
+        /*
+         * 转到登录界面
+         */
         private async void ToLoginOrSign()
         {
             await Task.Delay(10);
             var MyActive = new Intent(this, typeof(SignLogIn));
             StartActivity(MyActive);
         }
+        /*
+         * 转到升级界面
+         */
         private async void ToUpDate()
         {
             await Task.Delay(10);
             var MyActive = new Intent(this, typeof(UpdateActivity));
             StartActivity(MyActive);
         }
+        /*
+         * 透明导航栏或者状态栏
+         */
         public class StatusBarUtil
         {
             private static View _statusBarView;
@@ -161,6 +173,9 @@ namespace PINS
                 return context.Resources.GetDimensionPixelSize(resourceId);
             }
         }
+        /*
+         * 左菜单的listview适配器
+         */
         public class MyCustomeAdapter : BaseAdapter<string>
         {
             string[] items;
@@ -197,6 +212,49 @@ namespace PINS
                 MainText.Text = items[position];
 
                 return v;
+            }
+        }
+        /*
+        设置Tablayout元素的外边距 
+        */
+        // 具体方法（通过反射的方式）
+        public void SetIndicator(TabLayout tabs, int leftDip, int rightDip)
+        {
+            Java.Lang.Class tabLayout = tabs.Class;
+            Field tabStrip = null;
+            try
+            {
+                tabStrip = tabLayout.GetDeclaredField("mTabStrip");
+            }
+            catch (Java.Lang.NoSuchFieldException e)
+            {
+                //e.printStackTrace();
+            }
+
+            tabStrip.Accessible = true;
+            LinearLayout llTab = null;
+            try
+            {
+                llTab = (LinearLayout)tabStrip.Get(tabs);
+            }
+            catch (Java.Lang.IllegalAccessException e)
+            {
+                //e.printStackTrace();
+            }
+
+            int left = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, leftDip, Resources.DisplayMetrics);
+            int right = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, rightDip, Resources.DisplayMetrics);
+
+            for (int i = 0; i < llTab.ChildCount; i++)
+            {
+                View child = llTab.GetChildAt(i);
+                //child.GetPadding(0, 0, 0, 0);
+
+                var p = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 1);
+                p.LeftMargin = left;
+                p.RightMargin = right;
+                child.LayoutParameters =p;
+                child.Invalidate();
             }
         }
 
