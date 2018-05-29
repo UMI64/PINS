@@ -10,7 +10,5 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/leftmenutext"
-        android:layout_gravity="center_vertical"
-        android:gravity="center" />
+        android:id="@+id/leftmenutext" />
 </LinearLayout>

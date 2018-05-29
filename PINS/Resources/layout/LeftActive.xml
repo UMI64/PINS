@@ -25,12 +25,23 @@
             android:layout_height="30dp"
             app:tabIndicatorColor="@color/white"
             app:tabSelectedTextColor="@color/white"
-            app:tabMinWidth="20dp"
-            app:tabMaxWidth="50dp"
-            app:tabGravity="center"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabIndicatorHeight="2dp"
             app:tabTextColor="#dedede">
+        <!--
+        <android.support.design.widget.TabItem
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/tabItem1"/>
+        <android.support.design.widget.TabItem
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/tabItem1"/>
+        <android.support.design.widget.TabItem
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/tabItem1"/>
+           -->
       </android.support.design.widget.TabLayout>
     </LinearLayout>
     <LinearLayout
