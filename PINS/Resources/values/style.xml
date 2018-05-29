@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme.Custom" parent="@android:style/Theme.DeviceDefault">
+    <item name="android:colorPrimary">#ff42a5f5</item>
+    <item name="android:textColorSecondary">#ff212121</item>
+    <item name="android:colorButtonNormal">#fff5f5f5</item>
+    <item name="android:textColorPrimary">#ff212121</item>
+    <item name="android:colorControlActivated">#ff0d47a1</item>
+    <item name="android:colorBackground">#fffafafa</item>
+    <item name="android:windowBackground">?android:attr/colorBackground</item>
+  </style>
+  <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primaryDark</item>
+    <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+  </style>
+
+  <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+    <item name="color">@android:color/white</item>
+  </style>
+
+  <color name="primary">#1e89e7</color>
+  <color name="primaryDark">#1976d2</color>
+  <color name="red">#ff0000</color>
+  <color name="white">#ffffff</color>
+</resources>

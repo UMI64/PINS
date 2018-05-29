@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout4"
+    android:gravity="center_vertical"
+    tools:gridSpec="1|8|#0093eeff|K:#ff8080ff:16,l:72,l:16,r|S:#00ff00ff:16,0,l:16,56,l:16,0,r">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/linearLayout6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:measureWithLargestChild="true"
+        android:showDividers="none"
+        android:contextClickable="false"
+        android:foregroundGravity="center"
+        android:scrollIndicators="none"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:touchscreenBlocksFocus="false"
+        android:scrollbars="none"
+        android:fadingEdge="none">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/linearLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout1">
+                <TextView
+                    android:text="用户名："
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="0.0dp" />
+                <AutoCompleteTextView
+                    android:id="@+id/autocomplete_country"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0.0dp" />
+                <EditText
+                    android:inputType="textMultiLine"
+                    android:id="@+id/UserName"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2">
+                <TextView
+                    android:text="密    码："
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="0.0dp"
+                    android:allowUndo="false" />
+                <EditText
+                    android:inputType="textMultiLine"
+                    android:id="@+id/PassWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0.0dp" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:text="登录"
+                android:id="@+id/SignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:text="注册"
+                android:id="@+id/LogIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
